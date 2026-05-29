@@ -1,38 +1,51 @@
-// All possible hex characters
-const hexCharacters = "0123456789ABCDEF";
-
-// Selecting elements
 const button = document.querySelector(".btn");
-const colorText = document.querySelector(".color");
+const hexText = document.querySelector("#hexCode");
+const nameText = document.querySelector("#colorName");
 
-// Function to generate random hex color
-function getRandomHexColor() {
-  let hexColor = "#";
+// Limited known color map (CSS-style names)
+const namedColors = {
+  "#FF0000": "Red",
+  "#00FF00": "Lime",
+  "#0000FF": "Blue",
+  "#000000": "Black",
+  "#FFFFFF": "White",
+  "#FFFF00": "Yellow",
+  "#FFA500": "Orange",
+  "#800080": "Purple",
+  "#FFC0CB": "Pink",
+  "#008080": "Teal"
+};
 
-  // Generate 6 random characters
+const hexChars = "0123456789ABCDEF";
+
+// Generate random hex color
+function getRandomHex() {
+  let color = "#";
+
   for (let i = 0; i < 6; i++) {
-
-    // Random number between 0 and 15
-    const randomIndex = Math.floor(
-      Math.random() * hexCharacters.length
-    );
-
-    // Add random character to string
-    hexColor += hexCharacters[randomIndex];
+    const index = Math.floor(Math.random() * hexChars.length);
+    color += hexChars[index];
   }
 
-  return hexColor;
+  return color;
 }
 
-// Button click event
-button.addEventListener("click", function () {
+// Find closest named color (simple match only)
+function getColorName(hex) {
+  const upperHex = hex.toUpperCase();
 
-  // Generate color
-  const randomColor = getRandomHexColor();
+  if (namedColors[upperHex]) {
+    return namedColors[upperHex];
+  }
 
-  // Change background color
+  return "Unknown Shade";
+}
+
+button.addEventListener("click", () => {
+  const randomColor = getRandomHex();
+
   document.body.style.backgroundColor = randomColor;
 
-  // Update text on screen
-  colorText.textContent = randomColor;
+  hexText.textContent = randomColor;
+  nameText.textContent = getColorName(randomColor);
 });
